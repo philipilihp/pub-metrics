@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 public class Beer {
 
-    private BeerTrademark trademark;
+    private String trademark;
 
     private double alcoholByVolume;
 

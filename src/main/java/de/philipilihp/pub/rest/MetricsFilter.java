@@ -1,7 +1,6 @@
 package de.philipilihp.pub.rest;
 
 import de.philipilihp.pub.metrics.PubMetricsRegistry;
-import de.philipilihp.pub.model.BeerTrademark;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -41,9 +40,9 @@ public class MetricsFilter implements ContainerRequestFilter, ContainerResponseF
         long startTime = (long) requestContext.getProperty(REQUEST_PROPERTY_TIME);
         long durationInMs = (System.nanoTime() - startTime) / 1000000;
 
-        String beer = BeerTrademark.valueOf(
-                uriInfo.getPathParameters().getFirst("name"))
-                .name().toLowerCase();
+        String beer = uriInfo.getPathParameters()
+                .getFirst("name")
+                .toLowerCase();
 
         PubMetricsRegistry.registry()
                 .meter(METRICS_BEER_PREFIX + beer)

@@ -1,9 +1,7 @@
 package de.philipilihp.pub.rest;
 
 import de.philipilihp.pub.model.Beer;
-import de.philipilihp.pub.model.BeerTrademark;
 import de.philipilihp.pub.service.BeerRepository;
-import jdk.nashorn.internal.objects.annotations.Getter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -20,7 +18,7 @@ import java.util.Optional;
 public class BeerController {
 
     @Inject
-    private BeerRepository beerRepository = new BeerRepository();
+    private BeerRepository beerRepository;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,7 +31,7 @@ public class BeerController {
     @Path("{name}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBeerByName(@PathParam("name") BeerTrademark trademark) {
+    public Response getBeerByName(@PathParam("name") String trademark) {
         Optional<Beer> beer = beerRepository.findByName(trademark);
 
         if(beer.isPresent()) {
