@@ -9,6 +9,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,7 +18,8 @@ import java.io.IOException;
 @Provider
 public class MetricsFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
-    private static final String METRICS_BEER_PREFIX = "pub.beers.";
+    private static final String METRICS_BEER_PREFIX = "beers.";
+    private static final String METRICS_TIME_PREFIX = "beers.time.";
     private static final String REQUEST_PROPERTY_TIME = "request.time";
 
     @Override
@@ -45,11 +47,11 @@ public class MetricsFilter implements ContainerRequestFilter, ContainerResponseF
                 .toLowerCase();
 
         PubMetricsRegistry.registry()
-                .meter(METRICS_BEER_PREFIX + beer)
-                .mark();
+                .counter(METRICS_BEER_PREFIX + beer)
+                .inc();
 
         PubMetricsRegistry.registry()
-                .meter(METRICS_BEER_PREFIX + beer + ".time")
-                .mark(durationInMs);
+                .timer(METRICS_TIME_PREFIX + beer)
+                .update(durationInMs, TimeUnit.MILLISECONDS);
     }
 }
